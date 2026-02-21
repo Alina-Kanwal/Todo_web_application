@@ -1,0 +1,10 @@
+# Railway Configuration for Hackathon Todo App
+# https://docs.railway.app/reference/railway-toml
+
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+startCommand = "railway run"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3

@@ -1,0 +1,8 @@
+# Frontend Service Configuration
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+startCommand = "npx next start -p $PORT"
+healthcheckPath = "/"
+healthcheckTimeout = 60
