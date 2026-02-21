@@ -2,62 +2,49 @@
 
 ## Quick Deploy (5 minutes)
 
-### Step 1: Go to Railway
+### Step 1: Push to GitHub
+```bash
+git add .
+git commit -m "fix: Railway deployment configuration for monorepo"
+git push
+```
+
+### Step 2: Go to Railway
 1. Visit [railway.app](https://railway.app)
 2. Sign in with your GitHub account
 
-### Step 2: Create New Project
-1. Click **"New Project"**
-2. Select **"Deploy from GitHub repo"**
-3. Choose: `Alina-Kanwal/Todo_web_application`
-
-### Step 3: Deploy Backend Service
-1. Click **"New"** → **"Empty Service"**
-2. Set **Root Directory**: `backend`
-3. Set **Start Command**: `uvicorn src.main:app --host 0.0.0.0 --port $PORT`
-4. Go to **Variables** tab and add:
-   - `DATABASE_URL`: Your Neon PostgreSQL URL
-   - `BETTER_AUTH_SECRET`: Random 32+ char string (e.g., `openssl rand -hex 32`)
-5. Click **Deploy**
-
-### Step 4: Deploy Frontend Service
-1. Click **"New"** → **"Empty Service"**
-2. Set **Root Directory**: `frontend`
-3. Set **Build Command**: `npm run build`
-4. Set **Start Command**: `npx next start -p $PORT`
+### Step 3: Create Backend Service
+1. Click **"New Project"** → **"Deploy from GitHub repo"**
+2. Select: `Alina-Kanwal/Todo_web_application`
+3. Click **"New"** → **"Empty Service"**
+4. In the **Settings** tab:
+   - **Root Directory**: `backend`
+   - **Start Command**: `uvicorn src.main:app --host 0.0.0.0 --port $PORT`
 5. Go to **Variables** tab and add:
-   - `NEXT_PUBLIC_API_BASE_URL`: Your backend URL from Step 3 (e.g., `https://backend-production.up.railway.app`)
-   - `BETTER_AUTH_SECRET`: Same value as backend
-6. Click **Deploy**
+   - `DATABASE_URL`: Your Neon PostgreSQL URL
+   - `BETTER_AUTH_SECRET`: Random 32+ char string
+6. Railway will auto-deploy
 
-### Step 5: Generate JWT Secret
-Run this to generate a secure secret:
+### Step 4: Create Frontend Service
+1. In the **same project**, click **"New"** → **"Empty Service"**
+2. In the **Settings** tab:
+   - **Root Directory**: `frontend`
+   - **Build Command**: `npm run build`
+   - **Start Command**: `npx next start -p $PORT`
+3. Go to **Variables** tab and add:
+   - `NEXT_PUBLIC_API_BASE_URL`: Your backend URL (e.g., `https://backend-production.up.railway.app`)
+   - `BETTER_AUTH_SECRET`: Same value as backend
+4. Railway will auto-deploy
+
+---
+
+## Generate JWT Secret
+
+Run this locally to generate a secure secret:
 ```bash
 openssl rand -hex 32
 ```
 Use the **same secret** for both backend and frontend.
-
----
-
-## Alternative: Railway CLI
-
-If you prefer CLI:
-
-```bash
-# Login
-railway login --browser
-
-# Initialize project
-railway init
-
-# Deploy backend
-cd backend
-railway up
-
-# Deploy frontend (new service)
-cd ../frontend
-railway up --service <frontend-service-id>
-```
 
 ---
 
@@ -74,16 +61,23 @@ railway up --service <frontend-service-id>
 
 ## After Deployment
 
-1. **Backend URL**: `https://<backend-name>.railway.app`
-   - API Docs: `https://<backend-name>.railway.app/docs`
-   - Health: `https://<backend-name>.railway.app/api/health`
+### Backend
+- **URL**: `https://<backend-name>.railway.app`
+- **API Docs**: `https://<backend-name>.railway.app/docs`
+- **Health Check**: `https://<backend-name>.railway.app/api/health`
 
-2. **Frontend URL**: `https://<frontend-name>.railway.app`
-   - Main App: `https://<frontend-name>.railway.app`
+### Frontend
+- **URL**: `https://<frontend-name>.railway.app`
+- **Main App**: `https://<frontend-name>.railway.app`
 
 ---
 
 ## Troubleshooting
+
+### Railpack could not determine how to build the app
+- Ensure **Root Directory** is set to `backend` or `frontend` in Railway Settings
+- Verify `requirements.txt` exists in `backend/`
+- Verify `package.json` exists in `frontend/`
 
 ### Frontend can't connect to backend
 - Ensure `NEXT_PUBLIC_API_BASE_URL` is set correctly

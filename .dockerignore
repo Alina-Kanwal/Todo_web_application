@@ -5,6 +5,10 @@
 
 # Dependencies
 node_modules/
+__pycache__/
+*.pyc
+*.pyo
+.venv/
 
 # Build output
 .next/
@@ -30,3 +34,19 @@ Thumbs.db
 
 # Testing
 coverage/
+.pytest_cache/
+
+# Git
+.git/
+.gitignore
+
+# Qwen/Specify (not needed for deployment)
+.qwen/
+.specify/
+history/
+specs/
+QWEN.md
+
+# Misc
+$null
+*.bat
