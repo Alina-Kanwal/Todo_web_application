@@ -40,20 +40,27 @@ async function apiRequest<T>(
 ): Promise<T> {
   const token = getToken()
 
+  // Build headers object with proper typing
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    ...options.headers as Record<string, string>,
   }
 
+  // Add Authorization header if token exists
   if (token) {
     headers['Authorization'] = `Bearer ${token}`
+  }
+
+  // Merge any additional headers from options
+  if (options.headers) {
+    const additionalHeaders = options.headers as Record<string, string>
+    Object.assign(headers, additionalHeaders)
   }
 
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     ...options,
     headers,
   })
-  
+
   if (!response.ok) {
     const error: ApiError = await response.json().catch(() => ({
       status_code: response.status,
@@ -62,7 +69,7 @@ async function apiRequest<T>(
     }))
     throw new Error(error.message)
   }
-  
+
   return response.json()
 }
 
