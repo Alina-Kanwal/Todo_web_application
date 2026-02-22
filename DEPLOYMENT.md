@@ -1,40 +1,77 @@
 # Railway Deployment Guide
 
-## Quick Deploy (5 minutes)
+## ⚠️ CRITICAL: Root Directory Must Be Set
 
-### Step 1: Push to GitHub
-```bash
-git add .
-git commit -m "fix: Railway deployment configuration for monorepo"
-git push
+This is a **monorepo** (backend + frontend in one repo). Railway CANNOT auto-detect which folder to build.
+
+**You MUST manually set the Root Directory in Railway UI!**
+
+---
+
+## Step-by-Step: Fix Backend Deployment
+
+### Step 1: Go to Railway Dashboard
+1. Visit: https://railway.app
+2. Open your project: `efficient-acceptance`
+3. Click on your service: `Todo_web_application`
+
+### Step 2: Go to Settings Tab
+Click **"Settings"** at the top (next to Deployments, Variables, Metrics)
+
+### Step 3: Find "Deploy" in Right Sidebar
+On the right side of the Settings page, you'll see a menu:
+- Source
+- Networking
+- Scale
+- Build
+- **Deploy** ← Click this!
+- Config-as-code
+- Danger
+
+### Step 4: Set Root Directory
+After clicking "Deploy", you'll see:
+
+```
+┌──────────────────────────────────────────┐
+│ Root Directory                           │
+│ [  backend  ]  ← TYPE THIS!              │
+└──────────────────────────────────────────┘
 ```
 
-### Step 2: Go to Railway
-1. Visit [railway.app](https://railway.app)
-2. Sign in with your GitHub account
+**Enter: `backend`** (without quotes)
 
-### Step 3: Create Backend Service
-1. Click **"New Project"** → **"Deploy from GitHub repo"**
-2. Select: `Alina-Kanwal/Todo_web_application`
-3. Click **"New"** → **"Empty Service"**
-4. In the **Settings** tab:
-   - **Root Directory**: `backend`
-   - **Start Command**: `uvicorn src.main:app --host 0.0.0.0 --port $PORT`
-5. Go to **Variables** tab and add:
-   - `DATABASE_URL`: Your Neon PostgreSQL URL
-   - `BETTER_AUTH_SECRET`: Random 32+ char string
-6. Railway will auto-deploy
+### Step 5: Verify Start Command
+Make sure the Start Command is:
+```
+uvicorn src.main:app --host 0.0.0.0 --port $PORT
+```
 
-### Step 4: Create Frontend Service
-1. In the **same project**, click **"New"** → **"Empty Service"**
-2. In the **Settings** tab:
+### Step 6: Remove Pre-deploy Command (if exists)
+If you see "Pre-deploy Command" with `npm run migrate`, **delete it** or leave it empty.
+
+### Step 7: Add Environment Variables
+Click **"Variables"** tab at the top, then add:
+
+| Variable | Value |
+|----------|-------|
+| `DATABASE_URL` | Your Neon PostgreSQL URL |
+| `BETTER_AUTH_SECRET` | Random 32+ char string |
+
+### Step 8: Deploy!
+Click the purple **"Deploy"** button at the top left.
+
+---
+
+## Frontend Deployment (After Backend Works)
+
+1. Click **"New"** → **"Empty Service"**
+2. In Settings → Deploy section:
    - **Root Directory**: `frontend`
    - **Build Command**: `npm run build`
    - **Start Command**: `npx next start -p $PORT`
-3. Go to **Variables** tab and add:
-   - `NEXT_PUBLIC_API_BASE_URL`: Your backend URL (e.g., `https://backend-production.up.railway.app`)
-   - `BETTER_AUTH_SECRET`: Same value as backend
-4. Railway will auto-deploy
+3. Variables:
+   - `NEXT_PUBLIC_API_BASE_URL`: Your backend Railway URL
+   - `BETTER_AUTH_SECRET`: Same as backend
 
 ---
 
