@@ -65,8 +65,10 @@ def create_application() -> FastAPI:
     # Include routers
     from src.api.routes.auth import router as auth_router
     from src.api.routes.tasks import router as tasks_router
+    from src.api.routes.chat import router as chat_router
     application.include_router(auth_router)
     application.include_router(tasks_router)
+    application.include_router(chat_router)
 
     return application
 

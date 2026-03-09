@@ -26,6 +26,11 @@ class Settings(BaseSettings):
     # Application
     app_name: str = "Hackathon Todo API"
     debug: bool = False
+
+    # OpenAI
+    openai_api_key: str = ""
+    openai_model: str = "gpt-4o-mini"
+    openai_temperature: float = 0.7
     
     @property
     def allowed_origins_list(self) -> list[str]:

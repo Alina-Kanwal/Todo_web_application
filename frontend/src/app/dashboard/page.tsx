@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation'
 import { isAuthenticated, getCurrentUserFromToken } from '@/lib/auth'
 import { authApi, tasksApi } from '@/lib/api'
 import { Task } from '@/types'
+import ChatWidget from '@/components/chatbot/ChatWidget'
 
 export default function DashboardPage() {
   const router = useRouter()
@@ -352,6 +353,9 @@ export default function DashboardPage() {
           )}
         </div>
       </main>
+
+      {/* Chatbot Widget */}
+      <ChatWidget />
     </div>
   )
 }
