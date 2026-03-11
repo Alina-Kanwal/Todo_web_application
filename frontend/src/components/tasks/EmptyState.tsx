@@ -9,7 +9,7 @@ export default function EmptyState() {
       <div className="mb-4 text-4xl">📝</div>
       <h3 className="text-lg font-medium text-gray-900">No tasks yet</h3>
       <p className="mt-1 text-sm text-gray-500">
-        Create your first task to get started
+       Now Create your first task to get started
       </p>
     </div>
   )
