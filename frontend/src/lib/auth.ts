@@ -49,7 +49,7 @@ export async function getCurrentUser(): Promise<{ email: string; user_id: number
   if (!isAuthenticated()) return null
 
   try {
-    const user = await authApi.getCurrentUser()
+    const user = await authApi.getCurrentUser() as { email: string; user_id: number }
     return user
   } catch {
     return null
