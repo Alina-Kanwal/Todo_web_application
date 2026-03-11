@@ -185,6 +185,29 @@ export const tasksApi = {
   },
 }
 
+/**
+ * Check if user is authenticated
+ */
+function isAuthenticated(): boolean {
+  return getToken() !== null
+}
+
+/**
+ * Get current user from JWT token (basic implementation)
+ */
+function getCurrentUserFromToken(): { email: string } | null {
+  const token = getToken()
+  if (!token) return null
+  try {
+    // Basic JWT decode (payload is second part)
+    const payload = token.split('.')[1]
+    const decoded = JSON.parse(atob(payload))
+    return { email: decoded.sub || decoded.email }
+  } catch {
+    return null
+  }
+}
+
 // Auth hook for React components
 export function useAuth() {
   return {
@@ -194,4 +217,4 @@ export function useAuth() {
   }
 }
 
-export { getToken, setToken, removeToken }
+export { getToken, setToken, removeToken, isAuthenticated, getCurrentUserFromToken }
