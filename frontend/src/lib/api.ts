@@ -143,7 +143,7 @@ export const tasksApi = {
     if (sort) params.append('sort', sort)
     if (order) params.append('order', order)
 
-    const response = await apiRequest(`/api/tasks?${params.toString()}`)
+    const response = await apiRequest<{ tasks: Task[] }>(`/api/tasks?${params.toString()}`)
     return response.tasks
   },
 
